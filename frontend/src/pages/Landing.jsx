@@ -1,27 +1,12 @@
 import "../css/Landing.css";
+import Header from "../component/Header";
 
 function Landing() {
   return (
     <div className="landing">
       {/* HEADER */}
-      <header className="header">
-        <div className="container header-content">
-          <div className="logo">
-            <span>FinancePlan</span>
-          </div>
 
-          <nav className="nav">
-            <a href="#">Início</a>
-            <a href="#recursos">Recursos</a>
-            <a href="#">Blog</a>
-          </nav>
-
-          <div className="header-buttons">
-            <button className="btn btn-outline">Login</button>
-            <button className="btn btn-primary">Começar agora</button>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* HERO */}
       <section className="hero">
