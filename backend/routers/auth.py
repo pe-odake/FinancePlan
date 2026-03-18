@@ -36,7 +36,7 @@ async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
     return LoginResponse(
         user_id=user.user_id,
         nome=user.nome,
-        email=user.email
+        email=user.email,
     )
 
 
