@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
 import "../css/Login.css";
 
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   
   const handleSubmit = async (e) => {
@@ -24,7 +26,8 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        
+        // Assumindo que o backend retorna { user_id, nome, email }
+        login({ user_id: data.user_id, nome: data.nome, email: data.email });
         navigate("/dashboard");
       } else {
         alert("Credenciais inválidas!");

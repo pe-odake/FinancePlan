@@ -1,28 +1,74 @@
 import "../css/Header.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Header() {
+  const { authenticated, logout, user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
-    <div>
-      <header className="header">
-        <div className="container header-content">
-          <div className="logo">
-            <span>FinancePlan</span>
-          </div>
-
-          <nav className="nav">
-            <a href="#">Início</a>
-            <a href="#recursos">Recursos</a>
-            <a href="#">Blog</a>
-          </nav>
-
-          <div className="header-buttons">
-            <button className="btn btn-outline"><Link to="/login">Login</Link></button>
-            <button className="btn btn-primary-header"><Link to="/login">Começar agora</Link></button>
-          </div>
+    <header className="header">
+      <div className="container-header header-content">
+        
+        {/* LOGO */}
+        <div className="logo">
+          <span>FinancePlan</span>
         </div>
-      </header>
-    </div>
+
+        {/* NAV */}
+        <nav className="nav">
+          {!authenticated ? (
+            <>
+              <Link to="/">Início</Link>
+              <Link to="/">Investimentos</Link>
+              <Link to="/">Tutoriais</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/">Investimentos</Link>
+              <Link to="/">Tutoriais</Link>
+            </>
+          )}
+        </nav>
+
+        {/* DIREITA */}
+        <div className="header-right">
+          {authenticated ? (
+            <div className="user-area">
+              <span className="user-text">
+                Olá {user?.nome || "Usuário"}
+              </span>
+
+              <div className="avatar"></div>
+
+              <button
+                className="btn btn-outline"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="header-buttons">
+              <Link to="/login" className="btn btn-outline">
+                Login
+              </Link>
+              <Link to="/register" className="btn btn-primary-header">
+                Registrar
+              </Link>
+            </div>
+          )}
+        </div>
+
+      </div>
+    </header>
   );
 }
 
