@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react"; 
 import "../css/Dashboard.css";
 import Header from "../component/Header";
 import { useNavigate } from "react-router-dom";
@@ -8,19 +8,78 @@ function Dashboard() {
   const { authenticated, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // API
+  const [dadosDespesa, setDadosDespesa] = useState([]);
+  const [dadosReceita, setDadosReceita] = useState([]);
+  const [fetching, setFetching] = useState(true);
+
   useEffect(() => {
     if (!loading && !authenticated) {
       navigate("/login");
     }
+
+    if (authenticated) {
+      const carregarDados = async () => {
+
+        // DESPESAS
+        try {
+          const response = await fetch("http://127.0.0.1:8000/despesas", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // Se usar JWT, descomente a linha abaixo:
+              // "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+          });
+
+          if (response.ok) {
+            const dataDespesa = await response.json();
+            setDadosDespesa(dataDespesa);
+          } else {
+            console.error("Erro na resposta da API:", response.status);
+          }
+        } catch (error) {
+          console.error("Erro ao conectar com o FastAPI:", error);
+        } finally {
+          setFetching(false);
+        }
+
+        // RECEITAS
+        try {
+          const response = await fetch("http://127.0.0.1:8000/receitas", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const dataReceita = await response.json();
+            setDadosReceita(dataReceita);
+          } else {
+            console.error("Erro na resposta da API:", response.status);
+          }
+        } catch (error) {
+          console.error("Erro ao conectar com o FastAPI:", error);
+        } finally {
+          setFetching(false);
+        }
+      };
+
+      carregarDados();
+    }
   }, [authenticated, loading, navigate]);
 
-  if (loading) {
-    return <div>Carregando...</div>;
+  if (loading || (authenticated && fetching)) {
+    return <div className="loading">Carregando dados...</div>;
   }
 
   if (!authenticated) {
-    return null; // Ou uma mensagem, mas o useEffect redirecionará
+    return null;
   }
+
+  const valorTotalDespesas = dadosDespesa.reduce((acc, curr) => acc + Number(curr.valor_despesa), 0);
+  const valorTotalReceita = dadosReceita.reduce((acc, curr) => acc + Number(curr.valor_receita), 0);
 
   return (
     <div className="dashboard">
@@ -38,7 +97,7 @@ function Dashboard() {
             </div>
 
             <div className="card-value">
-              <h3>R$ ***,**</h3>
+              <h3>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorTotalDespesas)} TROCAR </h3>
               <span className="badge positive">
                 <span className="material-symbols-outlined">trending_up</span>
                 2.5%
@@ -54,7 +113,7 @@ function Dashboard() {
               </span>
             </div>
 
-            <h3 className="value-green">R$ ***,**</h3>
+            <h3 className="value-green">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorTotalReceita)}</h3>
           </div>
 
           <div className="card">
@@ -65,7 +124,7 @@ function Dashboard() {
               </span>
             </div>
 
-            <h3 className="value-red">R$ ***,**</h3>
+            <h3 className="value-red">{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorTotalDespesas)}</h3>
           </div>
         </section>
 
