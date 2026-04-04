@@ -38,7 +38,7 @@ function Dashboard() {
             </div>
 
             <div className="card-value">
-              <h3>R$ 15.420,00</h3>
+              <h3>R$ ***,**</h3>
               <span className="badge positive">
                 <span className="material-symbols-outlined">trending_up</span>
                 2.5%
@@ -54,7 +54,7 @@ function Dashboard() {
               </span>
             </div>
 
-            <h3 className="value-green">R$ 5.200,00</h3>
+            <h3 className="value-green">R$ ***,**</h3>
           </div>
 
           <div className="card">
@@ -65,7 +65,7 @@ function Dashboard() {
               </span>
             </div>
 
-            <h3 className="value-red">R$ 3.150,00</h3>
+            <h3 className="value-red">R$ ***,**</h3>
           </div>
         </section>
 
@@ -82,7 +82,7 @@ function Dashboard() {
               </svg>
 
               <div className="chart-center">
-                <span>R$ 3.150</span>
+                <span>R$ ***,**</span>
                 <p>Total</p>
               </div>
             </div>
@@ -106,7 +106,7 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <span className="value negative">- R$ 85,90</span>
+                <span className="value negative">- R$ ***,**</span>
               </div>
 
               {/* <!-- ITEM --> */}
@@ -122,7 +122,7 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <span className="value positive">+ R$ 4.500,00</span>
+                <span className="value positive">+ R$ ***,**</span>
               </div>
 
               {/* <!-- ITEM -->F */}
@@ -138,7 +138,7 @@ function Dashboard() {
                   </div>
                 </div>
 
-                <span className="value negative">- R$ 240,00</span>
+                <span className="value negative">- R$ ***,**</span>
               </div>
             </div>
           </div>
