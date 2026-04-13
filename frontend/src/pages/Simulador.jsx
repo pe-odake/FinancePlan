@@ -450,7 +450,6 @@ function Simulador() {
                         )}
                         {stock.symbol}
                       </span>
-                      <span className="cotacao-name">{stock.shortName}</span>
                     </div>
                     <span className={`cotacao-badge ${(stock.regularMarketChangePercent || 0) >= 0 ? "positive" : "negative"}`}>
                       <span className="material-symbols-outlined">
@@ -468,6 +467,16 @@ function Simulador() {
               ))}
             </div>
           )}
+        </div>
+        
+        {/* ==================== COTAÇÕES DE MOEDAS (PLACEHOLDER) ==================== */}
+        <div className="card cotacoes-section" style={{ marginTop: '20px' }}>
+          <h4 className="section-title">Cotação de Moedas</h4>
+          <div className="sim-placeholder" style={{ minHeight: '150px', padding: '20px' }}>
+            <p style={{ marginTop: '10px', fontSize: '15px', fontWeight: 'bold', color: '#64748b' }}>
+              Em produção...
+            </p>
+          </div>
         </div>
       </main>
     </div>
