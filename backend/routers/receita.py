@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from core.database import get_db
@@ -10,8 +10,8 @@ from schemas.receita import ReceitaResponse, ReceitaCreate
 router = APIRouter(prefix="/receitas", tags=["Receitas"])
 
 @router.get("/", response_model=List[ReceitaResponse])
-async def listar_receitas(db: AsyncSession = Depends(get_db)):
-    query = select(DimReceita)
+async def listar_receitas(user_id: int = Query(...), db: AsyncSession = Depends(get_db)):
+    query = select(DimReceita).where(DimReceita.user_id == user_id)
     result = await db.execute(query)
     return result.scalars().all()
 
@@ -34,3 +34,15 @@ async def criar_receita(receita: ReceitaCreate, db: AsyncSession = Depends(get_d
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Erro ao salvar receita: {str(e)}"
         )
+
+@router.delete("/{receita_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def deletar_receita(receita_id: int, db: AsyncSession = Depends(get_db)):
+    query = select(DimReceita).where(DimReceita.receita_id == receita_id)
+    result = await db.execute(query)
+    receita = result.scalar_one_or_none()
+
+    if not receita:
+        raise HTTPException(status_code=404, detail="Receita não encontrada")
+
+    await db.delete(receita)
+    await db.commit()

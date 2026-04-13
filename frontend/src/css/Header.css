@@ -105,5 +105,13 @@
   height: 36px;
   border-radius: 50%;
   border: 1px solid #e5e7eb;
-  background: #e5e7eb; /* placeholder */
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-icon {
+  font-size: 20px;
+  color: #9ca3af;
 }

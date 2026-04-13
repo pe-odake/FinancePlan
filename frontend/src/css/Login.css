@@ -199,6 +199,16 @@
   width: 100%;
 }
 
+.form-error {
+  background: #fef2f2;
+  color: #ef4444;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
 /* ================= RESPONSIVO ================= */
 
 @media (max-width: 900px) {

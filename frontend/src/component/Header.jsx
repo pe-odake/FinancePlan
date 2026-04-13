@@ -18,7 +18,9 @@ function Header() {
         
         {/* LOGO */}
         <div className="logo">
-          <span>FinancePlan</span>
+          <Link to={authenticated ? "/dashboard" : "/"} style={{ textDecoration: "none", color: "inherit" }}>
+            <span>FinancePlan</span>
+          </Link>
         </div>
 
         {/* NAV */}
@@ -26,14 +28,12 @@ function Header() {
           {!authenticated ? (
             <>
               <Link to="/">Início</Link>
-              <Link to="/">Investimentos</Link>
-              <Link to="/">Tutoriais</Link>
+              <a href="/#recursos">Recursos</a>
             </>
           ) : (
             <>
               <Link to="/dashboard">Dashboard</Link>
-              <Link to="/">Investimentos</Link>
-              <Link to="/">Tutoriais</Link>
+              <Link to="/simulador">Investimentos</Link>
             </>
           )}
         </nav>
@@ -46,7 +46,9 @@ function Header() {
                 Olá {user?.nome || "Usuário"}
               </span>
 
-              <div className="avatar"></div>
+              <div className="avatar">
+                <span className="material-symbols-outlined avatar-icon">person</span>
+              </div>
 
               <button
                 className="btn btn-outline"
@@ -60,7 +62,7 @@ function Header() {
               <Link to="/login" className="btn btn-outline">
                 Login
               </Link>
-              <Link to="/register" className="btn btn-primary-header">
+              <Link to="/login" className="btn btn-primary-header">
                 Registrar
               </Link>
             </div>

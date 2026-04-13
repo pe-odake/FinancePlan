@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from core.database import get_db
@@ -10,8 +10,8 @@ from schemas.despesa import DespesaResponse, DespesaCreate
 router = APIRouter(prefix="/despesas", tags=["Despesas"])
 
 @router.get("/", response_model=List[DespesaResponse])
-async def listar_despesas(db: AsyncSession = Depends(get_db)):
-    query = select(DimDespesa)
+async def listar_despesas(user_id: int = Query(...), db: AsyncSession = Depends(get_db)):
+    query = select(DimDespesa).where(DimDespesa.user_id == user_id)
     result = await db.execute(query)
     return result.scalars().all()
 
@@ -34,3 +34,15 @@ async def criar_despesa(despesa: DespesaCreate, db: AsyncSession = Depends(get_d
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Erro ao salvar despesa: {str(e)}"
         )
+
+@router.delete("/{despesa_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def deletar_despesa(despesa_id: int, db: AsyncSession = Depends(get_db)):
+    query = select(DimDespesa).where(DimDespesa.despesa_id == despesa_id)
+    result = await db.execute(query)
+    despesa = result.scalar_one_or_none()
+
+    if not despesa:
+        raise HTTPException(status_code=404, detail="Despesa não encontrada")
+
+    await db.delete(despesa)
+    await db.commit()

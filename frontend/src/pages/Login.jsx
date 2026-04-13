@@ -1,24 +1,35 @@
 import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import API_URL from '../services/apiConfig';
 import "../css/Login.css";
 
 function Login() {
   const [activeTab, setActiveTab] = useState("login");
   
+  // Login states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Register states
+  const [regNome, setRegNome] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+  const [regError, setRegError] = useState("");
+  const [loginError, setLoginError] = useState("");
+
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
   
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); 
+    setLoginError("");
 
     const loginData = { email, password };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login", { // criar pela .env um if para mudar URL
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData),
@@ -26,14 +37,47 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        // Assumindo que o backend retorna { user_id, nome, email }
         login({ user_id: data.user_id, nome: data.nome, email: data.email });
         navigate("/dashboard");
       } else {
-        alert("Credenciais inválidas!");
+        setLoginError("Credenciais inválidas!");
       }
     } catch (error) {
       console.error("Erro ao conectar com a API:", error);
+      setLoginError("Erro ao conectar com o servidor.");
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setRegError("");
+
+    if (regPassword.length < 8) {
+      setRegError("A senha deve ter no mínimo 8 caracteres.");
+      return;
+    }
+
+    const registerData = { nome: regNome, email: regEmail, password: regPassword };
+
+    try {
+      const response = await fetch(`${API_URL}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registerData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Login automático após registro
+        login({ user_id: data.user_id, nome: data.nome, email: data.email });
+        navigate("/dashboard");
+      } else {
+        const errorData = await response.json();
+        setRegError(errorData.detail || "Erro ao criar conta.");
+      }
+    } catch (error) {
+      console.error("Erro ao conectar com a API:", error);
+      setRegError("Erro ao conectar com o servidor.");
     }
   };
 
@@ -73,13 +117,13 @@ function Login() {
             <div className="tabs">
               <button
                 className={activeTab === "login" ? "active" : ""}
-                onClick={() => setActiveTab("login")}
+                onClick={() => { setActiveTab("login"); setLoginError(""); }}
               >
                 Entrar
               </button>
               <button
                 className={activeTab === "signup" ? "active" : ""}
-                onClick={() => setActiveTab("signup")}
+                onClick={() => { setActiveTab("signup"); setRegError(""); }}
               >
                 Criar Conta
               </button>
@@ -91,13 +135,16 @@ function Login() {
                 <h1>Bem-vindo de volta!</h1>
                 <p>Insira seus dados para acessar sua conta.</p>
 
-                <form onSubmit={handleSubmit}>
+                {loginError && <div className="form-error">{loginError}</div>}
+
+                <form onSubmit={handleLogin}>
                   <div className="input-group">
                     <label>Email:</label>
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      placeholder="nome@exemplo.com"
                       required
                     />
                   </div>
@@ -108,6 +155,7 @@ function Login() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Sua senha"
                       required
                     />
                   </div>
@@ -119,29 +167,50 @@ function Login() {
               </div>
             )}
 
-            {/* FORM SIGNUP - IMPLEMENTAR AINDA CADASTRO */}
+            {/* FORM SIGNUP */}
             {activeTab === "signup" && (
               <div className="form-content">
                 <h1>Comece sua jornada</h1>
                 <p>Crie sua conta gratuita em poucos segundos.</p>
 
-                <form>
+                {regError && <div className="form-error">{regError}</div>}
+
+                <form onSubmit={handleRegister}>
                   <div className="input-group">
                     <label>Nome completo</label>
-                    <input type="text" placeholder="Seu nome" />
+                    <input
+                      type="text"
+                      placeholder="Seu nome"
+                      value={regNome}
+                      onChange={(e) => setRegNome(e.target.value)}
+                      required
+                    />
                   </div>
 
                   <div className="input-group">
                     <label>E-mail</label>
-                    <input type="email" placeholder="nome@exemplo.com" />
+                    <input
+                      type="email"
+                      placeholder="nome@exemplo.com"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      required
+                    />
                   </div>
 
                   <div className="input-group">
                     <label>Senha</label>
-                    <input type="password" placeholder="Mínimo 8 caracteres" />
+                    <input
+                      type="password"
+                      placeholder="Mínimo 8 caracteres"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      minLength={8}
+                      required
+                    />
                   </div>
 
-                  <button className="btn-primary-login full">
+                  <button type="submit" className="btn-primary-login full">
                     Criar minha conta
                   </button>
                 </form>
