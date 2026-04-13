@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import "../css/Landing.css";
 import Header from "../component/Header";
+import financePlanImg from "../assets/finance_plan.png";
+
 
 function Landing() {
   const { authenticated, loading } = useContext(AuthContext);
@@ -45,7 +47,7 @@ function Landing() {
 
           <div className="hero-image">
             <div className="mockup">
-              <img src="src\assets\finance_plan.png" alt="Dashboard Preview"  id="dashboard-preview"/>
+              <img src={financePlanImg} alt="Dashboard Preview"  id="dashboard-preview"/>
             </div>
           </div>
         </div>
