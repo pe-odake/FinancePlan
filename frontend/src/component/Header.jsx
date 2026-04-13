@@ -47,7 +47,7 @@ function Header() {
               </span>
 
               <div className="avatar">
-                <span className="material-symbols-outlined avatar-icon">person</span>
+                {user?.nome ? user.nome.charAt(0).toUpperCase() : "U"}
               </div>
 
               <button
@@ -62,7 +62,7 @@ function Header() {
               <Link to="/login" className="btn btn-outline">
                 Login
               </Link>
-              <Link to="/login" className="btn btn-primary-header">
+              <Link to="/login" state={{ activeTab: "signup" }} className="btn btn-primary-header">
                 Registrar
               </Link>
             </div>

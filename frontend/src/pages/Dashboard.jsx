@@ -64,6 +64,7 @@ function Dashboard() {
   const [dadosReceita, setDadosReceita] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [fetching, setFetching] = useState(true);
+  const [movLimit, setMovLimit] = useState(4);
 
   // Modal states
   const [showModal, setShowModal] = useState(false);
@@ -74,6 +75,7 @@ function Dashboard() {
   const [formCategoria, setFormCategoria] = useState("");
 
   useEffect(() => {
+    document.title = "FinancePlan - Dashboard";
     if (!loading && !authenticated) {
       navigate("/login");
     }
@@ -363,7 +365,7 @@ function Dashboard() {
                   <p>Nenhuma movimentação registrada</p>
                 </div>
               ) : (
-                movimentacoes.slice(0, 10).map((mov) => (
+                movimentacoes.slice(0, movLimit).map((mov) => (
                   <div className="item" key={mov.id}>
                     <div className="item-left">
                       <div className={`icon-box ${mov.tipo === "receita" ? "green" : "red"}`}>
@@ -394,6 +396,14 @@ function Dashboard() {
                     </div>
                   </div>
                 ))
+              )}
+              {movimentacoes.length > movLimit && (
+                <button
+                  className="btn-ver-mais"
+                  onClick={() => setMovLimit((prev) => prev + 4)}
+                >
+                  Ver mais
+                </button>
               )}
             </div>
           </div>

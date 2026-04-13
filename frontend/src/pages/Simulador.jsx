@@ -47,6 +47,7 @@ function Simulador() {
   const [erroCotacoes, setErroCotacoes] = useState("");
 
   useEffect(() => {
+    document.title = "FinancePlan - Simulador de Investimentos";
     if (!loading && !authenticated) {
       navigate("/login");
     }

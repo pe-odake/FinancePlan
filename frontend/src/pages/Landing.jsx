@@ -1,7 +1,19 @@
+import { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 import "../css/Landing.css";
 import Header from "../component/Header";
 
 function Landing() {
+  const { authenticated, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "FinancePlan - Sua Vida Financeira";
+    if (!loading && authenticated) {
+      navigate("/dashboard");
+    }
+  }, [authenticated, loading, navigate]);
   return (
     <div className="landing">
       {/* HEADER */}
@@ -23,14 +35,17 @@ function Landing() {
               objetivos de forma simples e eficiente.
             </p>
 
-            <button className="btn btn-primary btn-large">
+            <button 
+              className="btn btn-primary btn-large"
+              onClick={() => navigate("/login", { state: { activeTab: "signup" } })}
+            >
               Criar conta gratuita
             </button>
           </div>
 
           <div className="hero-image">
             <div className="mockup">
-              <span>Dashboard Preview</span>
+              <img src="src\assets\finance_plan.png" alt="Dashboard Preview"  id="dashboard-preview"/>
             </div>
           </div>
         </div>
@@ -97,7 +112,10 @@ function Landing() {
             inteligente.
           </p>
 
-          <button className="btn btn-primary btn-large">
+          <button 
+            className="btn btn-primary btn-large"
+            onClick={() => navigate("/login", { state: { activeTab: "signup" } })}
+          >
             Começar agora gratuitamente
           </button>
         </div>

@@ -1,11 +1,19 @@
-import { useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
 import API_URL from '../services/apiConfig';
 import "../css/Login.css";
 
 function Login() {
-  const [activeTab, setActiveTab] = useState("login");
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.state?.activeTab || "login");
+
+  useEffect(() => {
+    document.title = "FinancePlan - Login";
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
   
   // Login states
   const [email, setEmail] = useState("");
