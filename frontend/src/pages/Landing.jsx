@@ -30,9 +30,9 @@ function Landing() {
             </h1>
 
             <p>
-              Subtexto explicando os benefícios do FinancePlan para sua vida
-              financeira e como nossa plataforma ajuda você a atingir seus
-              objetivos de forma simples e eficiente.
+              Simule investimentos, gerencie despesas e acompanhe cotações em tempo real.
+              <strong> Aviso:</strong> Este é um projeto de portfólio pessoal, 
+              e não se trata de uma empresa ou serviço financeiro real.
             </p>
 
             <button 
@@ -61,8 +61,8 @@ function Landing() {
               lugar
             </h3>
             <p>
-              Texto explicando sobre nossos serviços de forma simplificada e
-              focada na experiência do usuário.
+              Explore uma interface moderna desenvolvida para demonstrar capacidades 
+              tecnológicas. Lembre-se: esta plataforma é um projeto educacional.
             </p>
           </div>
 
@@ -127,8 +127,8 @@ function Landing() {
           <div>
             <h4>FinancePlan</h4>
             <p>
-              A plataforma completa para você dominar suas finanças e construir
-              seu patrimônio com inteligência.
+              Projeto de portfólio desenvolvido para demonstração de habilidades 
+              em engenharia de software e design de interfaces. Não é uma empresa real.
             </p>
           </div>
 
@@ -154,7 +154,7 @@ function Landing() {
         </div>
 
         <div className="footer-bottom">
-          © 2026 FinancePlan | Pedro Odake | Todos os direitos reservados.
+          © 2026 FinancePlan | Pedro Odake | Todos os direitos reservados. | Projeto para Portfolio
         </div>
       </footer>
     </div>

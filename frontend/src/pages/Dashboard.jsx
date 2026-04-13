@@ -15,14 +15,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const CATEGORIA_ICONE = {
   "Alimentação": "restaurant",
   "Transporte": "directions_car",
-  "Moradia": "home",
   "Saúde": "health_and_safety",
   "Educação": "school",
   "Lazer": "sports_esports",
   "Vestuário": "checkroom",
-  "Contas": "bolt",
-  "Salário": "payments",
-  "Freelance": "work",
+  "Contas": "receipt_long",
   "Investimentos": "trending_up",
   "Outros": "more_horiz",
 };
@@ -31,14 +28,11 @@ const CATEGORIA_ICONE = {
 const CATEGORIA_CORES = {
   "Alimentação": "#f97316",
   "Transporte": "#3b82f6",
-  "Moradia": "#8b5cf6",
   "Saúde": "#ef4444",
   "Educação": "#06b6d4",
   "Lazer": "#ec4899",
   "Vestuário": "#f59e0b",
   "Contas": "#64748b",
-  "Salário": "#22c55e",
-  "Freelance": "#14b8a6",
   "Investimentos": "#6366f1",
   "Outros": "#94a3b8",
 };
@@ -467,7 +461,9 @@ function Dashboard() {
                     required
                   >
                     <option value="">Selecione...</option>
-                    {categorias.map((cat) => (
+                    {categorias
+                      .filter(cat => !["Moradia", "Salário", "Freelance"].includes(cat.nome_categoria))
+                      .map((cat) => (
                       <option key={cat.categoria_id} value={cat.categoria_id}>
                         {cat.nome_categoria}
                       </option>
