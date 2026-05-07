@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from core.database import engine, Base, SessionLocal
 from fastapi.middleware.cors import CORSMiddleware
-from routers import user, auth, despesa, receita, categoria, investimentos
+from routers import user, auth, despesa, receita, categoria, investimentos, system
 from sqlalchemy import select
 from models.categoria import DimCategoria
 
@@ -46,6 +46,7 @@ async def startup():
             await session.commit()
 
 app.include_router(auth.router)
+app.include_router(system.router)
 app.include_router(user.router)
 app.include_router(despesa.router)
 app.include_router(receita.router)
